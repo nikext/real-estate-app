@@ -25,6 +25,14 @@
       flex-direction: column;
       gap: 50px;
 
+      .logoutButton {
+        padding: 12px 24px;
+        background-color: #fece51;
+        cursor: pointer;
+        border: none;
+        max-width: 100px;
+      }
+
       .title{
         display: flex;
         align-items: center;
