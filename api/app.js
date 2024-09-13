@@ -21,7 +21,7 @@ app.use(
 
 app.use("/api/posts", postRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/user", userRouter);
+app.use("/api/users", userRouter);
 app.use("/api/test", testRouter);
 
 app.listen(3000, () => {

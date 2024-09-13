@@ -37,7 +37,7 @@ function App() {
       ],
     },
     {
-      path: "/profile",
+      path: "/",
       element: <RequireAuth />,
       children: [
         {

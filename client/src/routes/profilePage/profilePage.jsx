@@ -9,7 +9,7 @@ import { useContext } from "react";
 function ProfilePage() {
   const navigate = useNavigate();
   const { currentUser, updateUser } = useContext(AuthContext);
-  const { email, avatar, username } = currentUser?.user || {};
+  const { email, avatar, username } = currentUser || {};
 
   const handleLogout = async () => {
     try {

@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 function Navbar() {
   const [open, setOpen] = useState(false);
   const { currentUser } = useContext(AuthContext);
-  const { avatar, username } = currentUser?.user || {};
+  const { avatar, username } = currentUser || {};
 
   return (
     <nav>
