@@ -1,6 +1,10 @@
 import "./profileUpdatePage.scss";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 function ProfileUpdatePage() {
+  const { currentUser, updateUser } = useContext(AuthContext);
+  const { username, email, avatar } = currentUser?.user || {};
   return (
     <div className="profileUpdatePage">
       <div className="formContainer">
@@ -12,15 +16,12 @@ function ProfileUpdatePage() {
               id="username"
               name="username"
               type="text"
+              defaultValue={username}
             />
           </div>
           <div className="item">
             <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-            />
+            <input id="email" name="email" type="email" defaultValue={email} />
           </div>
           <div className="item">
             <label htmlFor="password">Password</label>
@@ -30,7 +31,7 @@ function ProfileUpdatePage() {
         </form>
       </div>
       <div className="sideContainer">
-        <img src="" alt="" className="avatar" />
+        <img src={avatar || "/noavatar.png"} alt="" className="avatar" />
       </div>
     </div>
   );

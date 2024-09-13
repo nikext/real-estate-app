@@ -1,6 +1,9 @@
 import "./layout.scss";
-import Navbar from "../../components/navbar/Navbar"
+import Navbar from "../../components/navbar/Navbar";
 import { Outlet } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
 
 function Layout() {
   return (
@@ -9,10 +12,27 @@ function Layout() {
         <Navbar />
       </div>
       <div className="content">
-        <Outlet/>
+        <Outlet />
       </div>
     </div>
   );
 }
 
-export default Layout;
+function RequireAuth() {
+  const { currentUser } = useContext(AuthContext);
+
+  return !currentUser?.user ? (
+    <Navigate to="/login" />
+  ) : (
+    <div className="layout">
+      <div className="navbar">
+        <Navbar />
+      </div>
+      <div className="content">
+        <Outlet />
+      </div>
+    </div>
+  );
+}
+
+export { Layout, RequireAuth };
