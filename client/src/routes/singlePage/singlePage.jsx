@@ -27,6 +27,14 @@ function SinglePage() {
     }
   };
 
+  const handleOpenChat = () => {
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+    navigate(`/chat/${post.user.id}`);
+  };
+
   return (
     <div className="singlePage">
       <div className="details">
@@ -139,7 +147,7 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-            <button>
+            <button onClick={handleOpenChat}>
               <img src="/chat.png" alt="" />
               Send a Message
             </button>

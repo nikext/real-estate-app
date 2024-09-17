@@ -14,5 +14,6 @@ export const listPageLoader = async ({ request }) => {
 
 export const profilePageLoader = async ({ request }) => {
   const postPromise = await apiRequest(`/users/profilePosts`);
-  return defer({ postResponse: postPromise });
+  const chatPromise = await apiRequest(`/chats`);
+  return defer({ postResponse: postPromise, chatResponse: chatPromise });
 };

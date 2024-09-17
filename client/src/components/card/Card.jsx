@@ -1,7 +1,30 @@
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./card.scss";
 
 function Card({ item }) {
+  const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleChat = async () => {
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await apiRequest.post("/chats", {
+        receiverId: item.userId,
+      });
+      // Assuming the response includes the newly created chat ID
+      navigate("/profile"); // Navigate to the profile page where chats are displayed
+    } catch (error) {
+      console.error("Error creating chat:", error);
+    }
+  };
   return (
     <div className="card">
       <Link to={`/${item.id}`} className="imageContainer">
@@ -31,7 +54,7 @@ function Card({ item }) {
             <div className="icon">
               <img src="/save.png" alt="" />
             </div>
-            <div className="icon">
+            <div className="icon" onClick={handleChat}>
               <img src="/chat.png" alt="" />
             </div>
           </div>
