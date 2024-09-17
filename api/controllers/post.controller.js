@@ -1,4 +1,7 @@
 import prisma from "../lib/prisma.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const getPosts = async (req, res) => {
   const query = req.query;
@@ -46,8 +49,34 @@ export const getPost = async (req, res) => {
         },
       },
     });
-    res.status(200).json(post);
-  } catch (error) {
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    let isSaved = false;
+    const token = req.cookies?.token;
+
+    if (token) {
+      try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        const saved = await prisma.savedPost.findUnique({
+          where: {
+            userId_postId: {
+              postId: id,
+              userId: payload.id,
+            },
+          },
+        });
+        isSaved = !!saved;
+      } catch (err) {
+        console.error("Error verifying token:", err);
+      }
+    }
+
+    res.status(200).json({ ...post, isSaved });
+  } catch (err) {
+    console.error("Error in getPost:", err);
     res.status(500).json({ message: "Failed to get post" });
   }
 };
