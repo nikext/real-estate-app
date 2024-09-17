@@ -1,11 +1,33 @@
 import prisma from "../lib/prisma.js";
 
 export const getPosts = async (req, res) => {
+  const query = req.query;
   try {
-    const posts = await prisma.post.findMany();
+    const where = {
+      city: query.city || undefined,
+      type: query.type || undefined,
+      property: query.property || undefined,
+    };
+
+    if (query.bedroom) {
+      where.bedroom = parseInt(query.bedroom) || undefined;
+    }
+
+    if (query.minPrice || query.maxPrice) {
+      where.price = {};
+      if (query.minPrice)
+        where.price.gte = parseInt(query.minPrice) || undefined;
+      if (query.maxPrice)
+        where.price.lte = parseInt(query.maxPrice) || undefined;
+    }
+
+    const posts = await prisma.post.findMany({ where });
     res.status(200).json(posts);
   } catch (error) {
-    res.status(500).json({ message: "Failed to get posts" });
+    console.error("Error in getPosts:", error);
+    res
+      .status(500)
+      .json({ message: "Failed to get posts", error: error.message });
   }
 };
 
