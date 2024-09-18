@@ -16,11 +16,10 @@ function Card({ item }) {
     }
 
     try {
-      const response = await apiRequest.post("/chats", {
+      await apiRequest.post("/chats", {
         receiverId: item.userId,
       });
-      // Assuming the response includes the newly created chat ID
-      navigate("/profile"); // Navigate to the profile page where chats are displayed
+      navigate(`/chat/${item.id}`);
     } catch (error) {
       console.error("Error creating chat:", error);
     }
